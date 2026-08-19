@@ -1,0 +1,35 @@
+{% load cache %}
+<footer class="site-footer">
+  {% cache 600 site_footer site_settings.pk %}
+  <div class="container site-footer__inner">
+    <p class="site-footer__identity">
+      {% if site_settings.owner_name %}
+        <span class="site-footer__name">{{ site_settings.owner_name }}</span>
+        {% if site_settings.professional_title %}
+          <span class="site-footer__title">{{ site_settings.professional_title }}</span>
+        {% endif %}
+      {% endif %}
+    </p>
+    <ul class="site-footer__links">
+      {% if site_settings.contact_email %}
+        <li>
+          {# Entity-encoded to deter scrapers (FR-025). #}
+          <a href="{{ site_settings.obfuscated_mailto }}">{{ site_settings.obfuscated_contact_email }}</a>
+        </li>
+      {% endif %}
+      {% if site_settings.linkedin_url %}
+        <li><a href="{{ site_settings.linkedin_url }}" rel="me noopener">LinkedIn</a></li>
+      {% endif %}
+      {% if site_settings.github_url %}
+        <li><a href="{{ site_settings.github_url }}" rel="me noopener">GitHub</a></li>
+      {% endif %}
+      {% for profile in site_settings.other_profiles.all %}
+        <li><a href="{{ profile.url }}" rel="me noopener">{{ profile.label }}</a></li>
+      {% endfor %}
+    </ul>
+    <p class="site-footer__copyright">
+      &copy; {% now "Y" %} {{ site_settings.owner_name|default:"" }}
+    </p>
+  </div>
+  {% endcache %}
+</footer>

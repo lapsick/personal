@@ -1,0 +1,30 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<article class="container article">
+  <header class="article__header">
+    <h1>{{ page.title }}</h1>
+    <p class="article__meta">
+      <time datetime="{{ page.date|date:'Y-m-d' }}">{{ page.date|date:'F j, Y' }}</time>
+    </p>
+    {% with tags=page.tags.all %}
+      {% if tags %}
+        <ul class="tag-list">
+          {% for tag in tags %}<li class="tag">{{ tag }}</li>{% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </header>
+
+  {% if page.featured_image %}
+    <figure class="article__image">
+      {% image page.featured_image width-1200 alt=page.title %}
+    </figure>
+  {% endif %}
+
+  <div class="article__body">
+    {% for block in page.body %}{% include_block block %}{% endfor %}
+  </div>
+</article>
+{% endblock %}

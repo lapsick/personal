@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags cache %}
+
+{% block content %}
+<section class="container blog-index">
+  <h1>{{ page.title }}</h1>
+  {% if page.intro %}<p class="blog-index__intro">{{ page.intro }}</p>{% endif %}
+
+  {% if articles %}
+    {% cache 300 articles_list page.id list_token %}
+    <ul class="article-list">
+      {% for article in articles %}
+        <li class="article-list__item">
+          <h2 class="article-list__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+          <p class="article-list__meta">
+            <time datetime="{{ article.date|date:'Y-m-d' }}">{{ article.date|date:'F j, Y' }}</time>
+          </p>
+          <p class="article-list__summary">{{ article.summary }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+    {% endcache %}
+  {% else %}
+    <p class="empty-state">No articles have been published yet. Check back soon.</p>
+  {% endif %}
+</section>
+{% endblock %}

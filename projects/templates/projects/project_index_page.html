@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags cache %}
+
+{% block content %}
+<section class="container project-index">
+  <h1>{{ page.title }}</h1>
+  {% if page.intro %}<p class="project-index__intro">{{ page.intro }}</p>{% endif %}
+
+  {% if projects %}
+    {% cache 300 projects_list page.id list_token %}
+    <div class="card-grid">
+      {% for project in projects %}
+        <article class="card">
+          <h2 class="card__title"><a href="{{ project.url }}">{{ project.title }}</a></h2>
+          <p class="card__summary">{{ project.summary }}</p>
+          {% with techs=project.technologies.all %}
+            {% if techs %}
+              <ul class="tag-list">
+                {% for tag in techs %}<li class="tag">{{ tag }}</li>{% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+        </article>
+      {% endfor %}
+    </div>
+    {% endcache %}
+  {% else %}
+    <p class="empty-state">No projects have been published yet. Check back soon.</p>
+  {% endif %}
+</section>
+{% endblock %}

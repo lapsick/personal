@@ -1,0 +1,78 @@
+[project]
+name = "portfolio"
+version = "0.1.0"
+description = "Personal professional website (Django + Wagtail)."
+requires-python = "==3.12.*"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = ["*/migrations/*", ".specify", ".venv"]
+
+[tool.ruff.lint]
+# pycodestyle (E), Pyflakes (F), isort (I), pyupgrade (UP), bugbear (B), pydocstyle (D).
+select = ["E", "F", "I", "UP", "B", "D"]
+ignore = [
+    "D203", # one-blank-line-before-class (conflicts with D211)
+    "D213", # multi-line-summary-second-line (conflicts with D212)
+    "D106", # docstrings not required on Django/Wagtail `Meta` inner classes
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests and settings do not require full docstring coverage.
+"**/tests/*" = ["D"]
+"**/test_*.py" = ["D"]
+"conftest.py" = ["D"]
+"portfolio/settings/*" = ["D"]
+"**/migrations/*" = ["D", "E501"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["mypy_django_plugin.main"]
+ignore_missing_imports = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+exclude = ['migrations/', '\.venv/', '\.specify/']
+
+[[tool.mypy.overrides]]
+module = ["*.migrations.*", "*.tests.*"]
+ignore_errors = true
+
+[tool.django-stubs]
+django_settings_module = "portfolio.settings.dev"
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "portfolio.settings.dev"
+python_files = ["tests.py", "test_*.py", "*_tests.py"]
+# Coverage is collected on every run; the 80% gate is enforced in CI on the
+# combined unit+integration coverage (see .github/workflows/ci.yml) so the
+# view/template-heavy code exercised by integration tests counts toward it.
+addopts = "--cov=. --cov-config=pyproject.toml --cov-report=term-missing"
+markers = [
+    "integration: tests that touch the DB/email/HTTP flows (run as a separate suite)",
+]
+filterwarnings = [
+    # WhiteNoise warns when STATIC_ROOT is absent in dev/tests (no collectstatic);
+    # harmless because dev serves static via finders.
+    "ignore:No directory at:UserWarning",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["core", "home", "projects", "blog", "contact", "portfolio"]
+omit = [
+    "*/migrations/*",
+    "*/tests/*",
+    "*/test_*.py",
+    "conftest.py",
+    "manage.py",
+    "portfolio/wsgi.py",
+    "portfolio/settings/*",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
