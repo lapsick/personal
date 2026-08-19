@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+{# Standalone: Django renders 500 without context processors, so this page must
+   not depend on request-derived context (settings, navigation). #}
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Something went wrong</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}" />
+  </head>
+  <body class="error-page error-page--500">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+      <div class="container site-header__inner">
+        <a class="site-header__brand" href="/">Home</a>
+      </div>
+    </header>
+    <main id="main-content" tabindex="-1">
+      <section class="container error">
+        <h1 class="error__code">500</h1>
+        <p class="error__message">
+          Something went wrong on our end. Please try again in a moment.
+        </p>
+        <p class="error__actions">
+          <a class="button" href="/">Return to the home page</a>
+        </p>
+      </section>
+    </main>
+  </body>
+</html>

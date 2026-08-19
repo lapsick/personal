@@ -1,0 +1,64 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<article class="container project">
+  <h1>{{ page.title }}</h1>
+  <p class="project__summary">{{ page.summary }}</p>
+
+  {% if page.featured_image %}
+    <figure class="project__image">
+      {% image page.featured_image width-1000 alt=page.title %}
+    </figure>
+  {% endif %}
+
+  {% with techs=page.technologies.all %}
+    {% if techs %}
+      <section class="project__tech">
+        <h2>Technologies</h2>
+        <ul class="tag-list">
+          {% for tag in techs %}<li class="tag">{{ tag }}</li>{% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
+
+  <section class="project__problem">
+    <h2>Problem</h2>
+    <p>{{ page.problem|linebreaks }}</p>
+  </section>
+
+  <section class="project__role">
+    <h2>Role</h2>
+    <p>{{ page.role|linebreaks }}</p>
+  </section>
+
+  <section class="project__approach">
+    <h2>Approach</h2>
+    {% for block in page.approach %}{% include_block block %}{% endfor %}
+  </section>
+
+  <section class="project__outcome">
+    <h2>Outcome</h2>
+    <p>{{ page.outcome|linebreaks }}</p>
+  </section>
+
+  {% with links=page.external_links.all %}
+    {% if links %}
+      <section class="project__links">
+        <h2>Links</h2>
+        <ul>
+          {% for link in links %}
+            <li>
+              <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer">
+                {{ link.label }}
+                <span class="visually-hidden"> (opens in a new tab)</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
+</article>
+{% endblock %}

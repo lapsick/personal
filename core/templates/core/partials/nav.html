@@ -1,0 +1,20 @@
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="/">
+      {{ site_settings.owner_name|default:"Home" }}
+    </a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul class="site-nav__list">
+        {% for item in menu_items %}
+          <li class="site-nav__item">
+            <a
+              class="site-nav__link{% if item.active %} is-current{% endif %}"
+              href="{{ item.url }}"
+              {% if item.active %}aria-current="page"{% endif %}
+            >{{ item.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</header>

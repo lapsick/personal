@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block body_class %}error-page error-page--404{% endblock %}
+
+{% block content %}
+<section class="container error">
+  <h1 class="error__code">404</h1>
+  <p class="error__message">
+    We couldn&rsquo;t find the page you were looking for. It may have moved or no
+    longer exists.
+  </p>
+  <p class="error__actions">
+    <a class="button" href="/">Return to the home page</a>
+  </p>
+</section>
+{% endblock %}

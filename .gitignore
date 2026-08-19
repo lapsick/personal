@@ -1,3 +1,9 @@
+# Django / Wagtail
+db.sqlite3
+db.sqlite3-journal
+/media/
+/staticfiles/
+
 # OS
 .DS_Store
 Thumbs.db

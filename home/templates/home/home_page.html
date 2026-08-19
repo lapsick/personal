@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<section class="container hero">
+  <h1 class="hero__heading">{{ page.hero_heading }}</h1>
+  <p class="hero__subheading">{{ page.hero_subheading }}</p>
+  {% if page.primary_cta_page %}
+    <p class="hero__cta">
+      <a class="button" href="{{ page.primary_cta_page.url }}">{{ page.primary_cta_label }}</a>
+    </p>
+  {% endif %}
+</section>
+
+{% if page.intro %}
+  <section class="container intro">
+    {% for block in page.intro %}
+      {% include_block block %}
+    {% endfor %}
+  </section>
+{% endif %}
+
+{% with featured_projects=page.get_featured_projects %}
+  {% if featured_projects %}
+    <section class="container featured featured--projects">
+      <h2>Selected work</h2>
+      <div class="card-grid card-grid--three">
+        {% for project in featured_projects %}
+          <article class="card">
+            <h3><a href="{{ project.url }}">{{ project.title }}</a></h3>
+            {% if project.summary %}<p>{{ project.summary }}</p>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endwith %}
+
+{% with featured_articles=page.get_featured_articles %}
+  {% if featured_articles %}
+    <section class="container featured featured--articles">
+      <h2>Latest writing</h2>
+      <div class="card-grid">
+        {% for article in featured_articles %}
+          <article class="card">
+            <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
+            {% if article.date %}<p class="card__meta"><time datetime="{{ article.date|date:'Y-m-d' }}">{{ article.date|date:'M j, Y' }}</time></p>{% endif %}
+            {% if article.summary %}<p>{{ article.summary }}</p>{% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+{% endwith %}
+{% endblock %}

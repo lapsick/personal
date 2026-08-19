@@ -1,0 +1,26 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% firstof page.seo_title page.title site_settings.owner_name "Personal Website" as meta_title %}
+{% firstof page.search_description page.summary site_settings.tagline "" as meta_description %}
+
+<title>{{ meta_title }}{% if site_settings.owner_name and page %} &middot; {{ site_settings.owner_name }}{% endif %}</title>
+{% if meta_description %}<meta name="description" content="{{ meta_description }}" />{% endif %}
+{% if page.get_canonical_url %}<link rel="canonical" href="{{ page.get_canonical_url }}" />{% endif %}
+
+{# Open Graph #}
+<meta property="og:title" content="{{ meta_title }}" />
+{% if meta_description %}<meta property="og:description" content="{{ meta_description }}" />{% endif %}
+<meta property="og:type" content="{% firstof page.og_type 'website' %}" />
+{% if page.full_url %}<meta property="og:url" content="{{ page.full_url }}" />{% endif %}
+{% if site_settings.owner_name %}<meta property="og:site_name" content="{{ site_settings.owner_name }}" />{% endif %}
+
+{% with social_image=page.get_social_image %}
+  {% if social_image %}
+    {% image social_image width-1200 as og_img %}
+    <meta property="og:image" content="{{ og_img.full_url }}" />
+    <meta name="twitter:card" content="summary_large_image" />
+  {% else %}
+    <meta name="twitter:card" content="summary" />
+  {% endif %}
+{% endwith %}
+<meta name="twitter:title" content="{{ meta_title }}" />
+{% if meta_description %}<meta name="twitter:description" content="{{ meta_description }}" />{% endif %}

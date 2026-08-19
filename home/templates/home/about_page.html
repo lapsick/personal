@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<article class="container about">
+  <h1>{{ page.title }}</h1>
+
+  <div class="about__intro">{{ page.intro|richtext }}</div>
+
+  {% with expertise=page.get_expertise %}
+    {% if expertise %}
+      <section class="about__expertise">
+        <h2>Areas of expertise</h2>
+        <ul class="tag-list">
+          {% for area in expertise %}<li class="tag">{{ area }}</li>{% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
+
+  <section class="about__body">
+    {% for block in page.body %}
+      {% include_block block %}
+    {% endfor %}
+  </section>
+
+  {% if page.engagement_types %}
+    <section class="about__engagement">
+      <h2>Open to</h2>
+      <div>{{ page.engagement_types|richtext }}</div>
+    </section>
+  {% endif %}
+
+  {% if site_settings.resume_document %}
+    <p class="about__resume">
+      <a class="button" href="{{ site_settings.resume_document.url }}">
+        Download resume ({{ site_settings.resume_document.file_extension|upper }})
+      </a>
+    </p>
+  {% endif %}
+</article>
+{% endblock %}

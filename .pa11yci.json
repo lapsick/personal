@@ -1,0 +1,19 @@
+{
+  "defaults": {
+    "standard": "WCAG2AA",
+    "runners": ["axe"],
+    "timeout": 30000,
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:8000/",
+    "http://localhost:8000/about/",
+    "http://localhost:8000/projects/",
+    "http://localhost:8000/projects/sample-project/",
+    "http://localhost:8000/blog/",
+    "http://localhost:8000/blog/sample-article/",
+    "http://localhost:8000/contact/"
+  ]
+}

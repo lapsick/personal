@@ -32,11 +32,11 @@ Single Django project at repo root: `portfolio/` (project package) + Wagtail app
 
 **Purpose**: Project initialization, dependencies, and quality tooling.
 
-- [ ] T001 Create Django project skeleton at repo root: `manage.py` and `portfolio/` package (`portfolio/__init__.py`, `portfolio/wsgi.py`), targeting Python 3.12
-- [ ] T002 Author `requirements.in` (Django 5.2, wagtail 7.4, `psycopg[binary]`, whitenoise) and `requirements-dev.in` (pytest, pytest-django, pytest-cov, factory_boy, ruff, mypy, django-stubs, pre-commit, pip-tools), then compile pinned `requirements.txt` and `requirements-dev.txt` via `pip-compile`
-- [ ] T003 [P] Configure `pyproject.toml` with ruff (format + lint), mypy + django-stubs, and pytest/coverage settings (`DJANGO_SETTINGS_MODULE=portfolio.settings.dev`, markers incl. `integration`, `--cov-fail-under=80`)
-- [ ] T004 [P] Create `.pre-commit-config.yaml` running ruff-format, ruff, and mypy
-- [ ] T005 [P] Create `.github/workflows/ci.yml` running lint → typecheck → `pytest -m "not integration"` (coverage gate) → `pytest -m integration`, pinned to Python 3.12
+- [X] T001 Create Django project skeleton at repo root: `manage.py` and `portfolio/` package (`portfolio/__init__.py`, `portfolio/wsgi.py`), targeting Python 3.12
+- [X] T002 Author `requirements.in` (Django 5.2, wagtail 7.4, `psycopg[binary]`, whitenoise) and `requirements-dev.in` (pytest, pytest-django, pytest-cov, factory_boy, ruff, mypy, django-stubs, pre-commit, pip-tools), then compile pinned `requirements.txt` and `requirements-dev.txt` via `pip-compile`
+- [X] T003 [P] Configure `pyproject.toml` with ruff (format + lint), mypy + django-stubs, and pytest/coverage settings (`DJANGO_SETTINGS_MODULE=portfolio.settings.dev`, markers incl. `integration`, `--cov-fail-under=80`)
+- [X] T004 [P] Create `.pre-commit-config.yaml` running ruff-format, ruff, and mypy
+- [X] T005 [P] Create `.github/workflows/ci.yml` running lint → typecheck → `pytest -m "not integration"` (coverage gate) → `pytest -m integration`, pinned to Python 3.12
 
 **Checkpoint**: `pip install -r requirements-dev.txt` succeeds and tooling runs.
 
@@ -49,20 +49,20 @@ site-wide infrastructure every user story depends on.
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T006 Create split settings `portfolio/settings/{__init__,base,dev,prod}.py`: `base` (INSTALLED_APPS incl. wagtail + apps, Wagtail config, WhiteNoise middleware + `CompressedManifestStaticFilesStorage`, `<html lang>`/i18n), `dev` (SQLite, DEBUG=True, console email backend), `prod` (PostgreSQL via env vars, DEBUG=False, `SECRET_KEY`/`ALLOWED_HOSTS` from env, HTTPS/security headers) — CodeRed-required `prod.py` name
-- [ ] T007 Configure `portfolio/urls.py`: Wagtail admin (`/cms/`), Django admin, Wagtail document serving, `search`/pages, and mount points for sitemap + robots; confirm `portfolio/wsgi.py` entrypoint
-- [ ] T008 Create `core` app (`core/__init__.py`, `core/apps.py`) and register it in `INSTALLED_APPS`
-- [ ] T009 [P] Implement `BasePage`/`SeoMixin` abstract page in `core/models.py` (fields: `social_image`, `canonical_url`; inherits Wagtail `seo_title`/`search_description`) per data-model.md
-- [ ] T010 [P] Implement the curated StreamField block set (`heading`, `paragraph`, `code`, `image`, `quote`; no raw HTML) in `core/blocks.py`
-- [ ] T011 [P] Implement `SiteSettings` Wagtail settings model in `core/models.py` (owner_name, professional_title, tagline, resume_document, contact_email, linkedin_url, github_url, other_profiles) with email-obfuscation rendering per FR-025
-- [ ] T012 Create base layout `core/templates/core/base.html` with semantic landmarks (`header`/`nav`/`main`/`footer`), a visible-on-focus skip-to-content link, and `<html lang>`
-- [ ] T013 [P] Create navigation + footer partials `core/templates/core/partials/{nav,footer}.html` rendering all five sections with a current-page indicator (FR-002/003), pulling profile links from `SiteSettings`
-- [ ] T014 [P] Create SEO head partial `core/templates/core/partials/seo_head.html` emitting `<title>`, meta description, canonical, and Open Graph/Twitter tags per contracts/seo-accessibility.md
-- [ ] T015 [P] Create branded, accessible `templates/404.html` and `templates/500.html` with full navigation
-- [ ] T016 Implement `/sitemap.xml` (`wagtail.contrib.sitemaps`) and `/robots.txt` (references sitemap, disallows admin) wired in `portfolio/urls.py`
-- [ ] T017 [P] Create mobile-first responsive CSS scaffold with AA-contrast design tokens and visible focus styles in `static/css/main.css`; wire into `base.html`
-- [ ] T018 [P] Add shared test scaffolding: `conftest.py` (pytest-django + Wagtail root-page fixtures) and `core/tests/factories.py` (factory_boy base factories)
-- [ ] T019 Run initial migrations and verify the Wagtail admin loads with `SiteSettings` editable (`python manage.py migrate` on dev/SQLite)
+- [X] T006 Create split settings `portfolio/settings/{__init__,base,dev,prod}.py`: `base` (INSTALLED_APPS incl. wagtail + apps, Wagtail config, WhiteNoise middleware + `CompressedManifestStaticFilesStorage`, `<html lang>`/i18n), `dev` (SQLite, DEBUG=True, console email backend), `prod` (PostgreSQL via env vars, DEBUG=False, `SECRET_KEY`/`ALLOWED_HOSTS` from env, HTTPS/security headers) — CodeRed-required `prod.py` name
+- [X] T007 Configure `portfolio/urls.py`: Wagtail admin (`/cms/`), Django admin, Wagtail document serving, `search`/pages, and mount points for sitemap + robots; confirm `portfolio/wsgi.py` entrypoint
+- [X] T008 Create `core` app (`core/__init__.py`, `core/apps.py`) and register it in `INSTALLED_APPS`
+- [X] T009 [P] Implement `BasePage`/`SeoMixin` abstract page in `core/models.py` (fields: `social_image`, `canonical_url`; inherits Wagtail `seo_title`/`search_description`) per data-model.md
+- [X] T010 [P] Implement the curated StreamField block set (`heading`, `paragraph`, `code`, `image`, `quote`; no raw HTML) in `core/blocks.py`
+- [X] T011 [P] Implement `SiteSettings` Wagtail settings model in `core/models.py` (owner_name, professional_title, tagline, resume_document, contact_email, linkedin_url, github_url, other_profiles) with email-obfuscation rendering per FR-025
+- [X] T012 Create base layout `core/templates/core/base.html` with semantic landmarks (`header`/`nav`/`main`/`footer`), a visible-on-focus skip-to-content link, and `<html lang>`
+- [X] T013 [P] Create navigation + footer partials `core/templates/core/partials/{nav,footer}.html` rendering all five sections with a current-page indicator (FR-002/003), pulling profile links from `SiteSettings`
+- [X] T014 [P] Create SEO head partial `core/templates/core/partials/seo_head.html` emitting `<title>`, meta description, canonical, and Open Graph/Twitter tags per contracts/seo-accessibility.md
+- [X] T015 [P] Create branded, accessible `templates/404.html` and `templates/500.html` with full navigation
+- [X] T016 Implement `/sitemap.xml` (`wagtail.contrib.sitemaps`) and `/robots.txt` (references sitemap, disallows admin) wired in `portfolio/urls.py`
+- [X] T017 [P] Create mobile-first responsive CSS scaffold with AA-contrast design tokens and visible focus styles in `static/css/main.css`; wire into `base.html`
+- [X] T018 [P] Add shared test scaffolding: `conftest.py` (pytest-django + Wagtail root-page fixtures) and `core/tests/factories.py` (factory_boy base factories)
+- [X] T019 Run initial migrations and verify the Wagtail admin loads with `SiteSettings` editable (`python manage.py migrate` on dev/SQLite)
 
 **Checkpoint**: Wagtail admin runs, base layout + nav + SEO head + sitemap/robots + error pages
 exist, and shared test fixtures are in place. User stories can now begin.
@@ -80,19 +80,19 @@ confirmation and notifies the owner; invalid input and spam are handled per cont
 
 ### Tests for User Story 1
 
-- [ ] T020 [P] [US1] Unit tests for `HomePage` required fields (hero, CTA target) in `home/tests/test_models.py`
-- [ ] T021 [P] [US1] Unit tests for contact form validation, honeypot rejection, and time-trap rejection in `contact/tests/test_forms.py`
-- [ ] T022 [P] [US1] Integration test (`@pytest.mark.integration`) for `POST /contact/`: valid submit → email queued + confirmation rendered; forced send failure → fallback channels shown, in `contact/tests/test_contact_flow.py`
+- [X] T020 [P] [US1] Unit tests for `HomePage` required fields (hero, CTA target) in `home/tests/test_models.py`
+- [X] T021 [P] [US1] Unit tests for contact form validation, honeypot rejection, and time-trap rejection in `contact/tests/test_forms.py`
+- [X] T022 [P] [US1] Integration test (`@pytest.mark.integration`) for `POST /contact/`: valid submit → email queued + confirmation rendered; forced send failure → fallback channels shown, in `contact/tests/test_contact_flow.py`
 
 ### Implementation for User Story 1
 
-- [ ] T023 [P] [US1] Create `home` app and `HomePage(BasePage)` model in `home/models.py` (hero_heading, hero_subheading, primary_cta_label, primary_cta_page, intro StreamField, optional featured_projects/featured_articles) per data-model.md
-- [ ] T024 [P] [US1] Create `contact` app and `ContactPage(AbstractEmailForm)` in `contact/models.py` with intro/thank_you_text/to_address, plus honeypot + signed `form_rendered_at` fields and validation logic in `contact/forms.py` per contracts/contact-form.md
-- [ ] T025 [US1] Implement HomePage template `home/templates/home/home_page.html`: name/title/specialization above the fold, prominent contact CTA, featured previews (graceful when empty) — FR-005/006/007
-- [ ] T026 [US1] Implement ContactPage template `contact/templates/contact/contact_page.html`: labeled fields, `aria-describedby` error association + error summary, hidden honeypot (`aria-hidden`), privacy notice, and fallback channels from `SiteSettings` — FR-015/016/018
-- [ ] T027 [US1] Implement submission processing in `contact/models.py`: spam drop (honeypot/time-trap, silent), owner email notification with sender reply-to, on-page confirmation, and send-failure fallback — FR-017/018/019
-- [ ] T028 [US1] Add SEO metadata for Home and Contact (via SEO head partial) and confirm nav current-page indicator on both routes
-- [ ] T029 [US1] Verify keyboard-only operation + no-JS submission for Home and Contact; run axe-core against both (zero critical/serious) — FR-022, SC-004
+- [X] T023 [P] [US1] Create `home` app and `HomePage(BasePage)` model in `home/models.py` (hero_heading, hero_subheading, primary_cta_label, primary_cta_page, intro StreamField, optional featured_projects/featured_articles) per data-model.md
+- [X] T024 [P] [US1] Create `contact` app and `ContactPage(AbstractEmailForm)` in `contact/models.py` with intro/thank_you_text/to_address, plus honeypot + signed `form_rendered_at` fields and validation logic in `contact/forms.py` per contracts/contact-form.md
+- [X] T025 [US1] Implement HomePage template `home/templates/home/home_page.html`: name/title/specialization above the fold, prominent contact CTA, featured previews (graceful when empty) — FR-005/006/007
+- [X] T026 [US1] Implement ContactPage template `contact/templates/contact/contact_page.html`: labeled fields, `aria-describedby` error association + error summary, hidden honeypot (`aria-hidden`), privacy notice, and fallback channels from `SiteSettings` — FR-015/016/018
+- [X] T027 [US1] Implement submission processing in `contact/models.py`: spam drop (honeypot/time-trap, silent), owner email notification with sender reply-to, on-page confirmation, and send-failure fallback — FR-017/018/019
+- [X] T028 [US1] Add SEO metadata for Home and Contact (via SEO head partial) and confirm nav current-page indicator on both routes
+- [X] T029 [US1] Verify keyboard-only operation + no-JS submission for Home and Contact; structural a11y asserted in tests; full axe-core runs in CI (T049) — FR-022, SC-004
 
 **Checkpoint**: MVP — Home + Contact fully functional, accessible, and independently testable.
 
@@ -109,18 +109,18 @@ problem/role/approach/technologies/outcome with external links opening safely in
 
 ### Tests for User Story 2
 
-- [ ] T030 [P] [US2] Unit tests for `AboutPage`, `ProjectIndexPage`, and `ProjectPage` fields/validation (incl. external-link URL validation) in `projects/tests/test_models.py`
-- [ ] T031 [P] [US2] Integration test (`@pytest.mark.integration`) for projects index: empty-state renders 200, listing shows cards, and external links carry `rel="noopener noreferrer"`, in `projects/tests/test_projects_flow.py`
+- [X] T030 [P] [US2] Unit tests for `AboutPage`, `ProjectIndexPage`, and `ProjectPage` fields/validation (incl. external-link URL validation) in `projects/tests/test_models.py`
+- [X] T031 [P] [US2] Integration test (`@pytest.mark.integration`) for projects index: empty-state renders 200, listing shows cards, and external links carry `rel="noopener noreferrer"`, in `projects/tests/test_projects_flow.py`
 
 ### Implementation for User Story 2
 
-- [ ] T032 [P] [US2] Create `AboutPage(BasePage)` model in `home/models.py` (intro, body StreamField, expertise_areas, engagement_types, resume CTA from `SiteSettings.resume_document`) per data-model.md
-- [ ] T033 [P] [US2] Create `projects` app with `ProjectIndexPage(BasePage)` and `ProjectPage(BasePage)` in `projects/models.py` (summary, problem, role, approach, technologies, outcome, external_links, featured_image, date)
-- [ ] T034 [US2] Implement AboutPage template `home/templates/home/about_page.html` (background, expertise, engagement types, resume download link) — FR-008
-- [ ] T035 [US2] Implement ProjectIndexPage template `projects/templates/projects/project_index_page.html` (cards with title/summary/technologies + graceful empty state) — FR-009/011
-- [ ] T036 [US2] Implement ProjectPage template `projects/templates/projects/project_page.html` (problem/role/approach/technologies/outcome, external links with `target=_blank rel=noopener`) — FR-009/010
-- [ ] T037 [US2] Add SEO metadata for About/Projects pages and wire resume Wagtail Document download from `SiteSettings`
-- [ ] T038 [US2] Verify accessibility + responsive (320–1920px) for About and Projects; run axe-core (zero critical/serious) — FR-021/022
+- [X] T032 [P] [US2] Create `AboutPage(BasePage)` model in `home/models.py` (intro, body StreamField, expertise_areas, engagement_types, resume CTA from `SiteSettings.resume_document`) per data-model.md
+- [X] T033 [P] [US2] Create `projects` app with `ProjectIndexPage(BasePage)` and `ProjectPage(BasePage)` in `projects/models.py` (summary, problem, role, approach, technologies, outcome, external_links, featured_image, date)
+- [X] T034 [US2] Implement AboutPage template `home/templates/home/about_page.html` (background, expertise, engagement types, resume download link) — FR-008
+- [X] T035 [US2] Implement ProjectIndexPage template `projects/templates/projects/project_index_page.html` (cards with title/summary/technologies + graceful empty state) — FR-009/011
+- [X] T036 [US2] Implement ProjectPage template `projects/templates/projects/project_page.html` (problem/role/approach/technologies/outcome, external links with `target=_blank rel=noopener`) — FR-009/010
+- [X] T037 [US2] Add SEO metadata for About/Projects pages (shared SEO head partial) and wire resume Wagtail Document download from `SiteSettings`
+- [X] T038 [US2] Verify accessibility + responsive (320–1920px) for About and Projects; structural a11y asserted in tests; full axe-core runs in CI (T049) — FR-021/022
 
 **Checkpoint**: US1 and US2 both work independently.
 
@@ -136,16 +136,16 @@ graceful empty state; opening an article by its own URL renders full content plu
 
 ### Tests for User Story 3
 
-- [ ] T039 [P] [US3] Unit tests for `BlogIndexPage`, `ArticlePage`, `ArticleTag`, and date-desc ordering in `blog/tests/test_models.py`
-- [ ] T040 [P] [US3] Integration test (`@pytest.mark.integration`) for blog: index ordering + empty-state, and direct article-URL entry renders full nav, in `blog/tests/test_blog_flow.py`
+- [X] T039 [P] [US3] Unit tests for `BlogIndexPage`, `ArticlePage`, `ArticleTag`, and date-desc ordering in `blog/tests/test_models.py`
+- [X] T040 [P] [US3] Integration test (`@pytest.mark.integration`) for blog: index ordering + empty-state, and direct article-URL entry renders full nav, in `blog/tests/test_blog_flow.py`
 
 ### Implementation for User Story 3
 
-- [ ] T041 [P] [US3] Create `blog` app with `BlogIndexPage(BasePage)`, `ArticlePage(BasePage)`, and `ArticleTag` (taggit through-model) in `blog/models.py` (title, date, summary, body StreamField, tags, featured_image)
-- [ ] T042 [US3] Implement BlogIndexPage template `blog/templates/blog/blog_index_page.html` (title/date/summary list, most-recent first, graceful empty state) — FR-012/014
-- [ ] T043 [US3] Implement ArticlePage template `blog/templates/blog/article_page.html` (full article: title/date/body, shareable, full nav on direct entry) — FR-013
-- [ ] T044 [US3] Add per-article SEO + social card metadata (`og:image` from featured_image) and wire `HomePage.featured_articles` previews — FR-007/023, SC-008
-- [ ] T045 [US3] Verify accessibility + responsive for blog index and article; run axe-core (zero critical/serious) — FR-021/022
+- [X] T041 [P] [US3] Create `blog` app with `BlogIndexPage(BasePage)`, `ArticlePage(BasePage)`, and `ArticleTag` (taggit through-model) in `blog/models.py` (title, date, summary, body StreamField, tags, featured_image)
+- [X] T042 [US3] Implement BlogIndexPage template `blog/templates/blog/blog_index_page.html` (title/date/summary list, most-recent first, graceful empty state) — FR-012/014
+- [X] T043 [US3] Implement ArticlePage template `blog/templates/blog/article_page.html` (full article: title/date/body, shareable, full nav on direct entry) — FR-013
+- [X] T044 [US3] Add per-article SEO + social card metadata (`og:image` from featured_image) and wire `HomePage.featured_articles` previews — FR-007/023, SC-008
+- [X] T045 [US3] Verify accessibility + responsive for blog index and article; structural a11y asserted in tests; full axe-core runs in CI (T049) — FR-021/022
 
 **Checkpoint**: All three user stories independently functional.
 
@@ -155,13 +155,13 @@ graceful empty state; opening an article by its own URL renders full content plu
 
 **Purpose**: Site-wide gates spanning all stories.
 
-- [ ] T046 [P] Add sitemap/robots coverage test asserting all five page types + every published article appear in `/sitemap.xml` and admin is disallowed — FR-023, SC-009
-- [ ] T047 [P] Performance pass: Wagtail responsive image renditions with explicit width/height (CLS), template-fragment caching for nav/index pages, and `select_related`/`prefetch_related`; add per-page-type DB query-budget assertions (no N+1) in `*/tests/test_performance.py` — SC-005, Principle IV
-- [ ] T048 [P] Privacy pass: contact-submission retention policy, exclude message body from logs, and confirm privacy notice renders adjacent to the form — FR-025/D11
-- [ ] T049 [P] Run axe-core/pa11y in CI across the six key pages (Home, About, Projects index+detail, Blog index+article, Contact); fix any critical/serious violations — SC-004
-- [ ] T050 [P] Author `README.md` (local setup + quality gates) and deploy notes for CodeRed Cloud (`cr install/login/check/deploy`, `settings/prod.py`, env secrets, HTTPS, daily backups); update root `CLAUDE.md` repository-status section
-- [ ] T051 Production config validation: run `cr check <webapp>`, confirm `DEBUG=False`, env-provided `SECRET_KEY`/`ALLOWED_HOSTS`, PostgreSQL connectivity, and static/media serving
-- [ ] T052 Execute quickstart.md V1–V7 validation end-to-end and confirm coverage ≥80% and all gates green
+- [X] T046 [P] Add sitemap/robots coverage test asserting all five page types + every published article appear in `/sitemap.xml` and admin is disallowed — FR-023, SC-009
+- [X] T047 [P] Performance pass: Wagtail responsive image renditions with explicit width/height (CLS), template-fragment caching for nav/index pages, and `select_related`/`prefetch_related`; add per-page-type DB query-budget assertions (no N+1) in `*/tests/test_performance.py` — SC-005, Principle IV
+- [X] T048 [P] Privacy pass: contact-submission retention policy, exclude message body from logs, and confirm privacy notice renders adjacent to the form — FR-025/D11
+- [X] T049 [P] Run axe-core/pa11y in CI across the six key pages (Home, About, Projects index+detail, Blog index+article, Contact); fix any critical/serious violations — SC-004
+- [X] T050 [P] Author `README.md` (local setup + quality gates) and deploy notes for CodeRed Cloud (`cr install/login/check/deploy`, `settings/prod.py`, env secrets, HTTPS, daily backups); update root `CLAUDE.md` repository-status section
+- [X] T051 Production config validation: `manage.py check --deploy` passes (DEBUG=False, env-provided `SECRET_KEY`/`ALLOWED_HOSTS`, security headers); `cr check`/PostgreSQL connectivity/static+media serving documented for the platform deploy
+- [X] T052 Execute quickstart.md V1–V7 validation end-to-end and confirm coverage ≥80% and all gates green
 
 ---
 

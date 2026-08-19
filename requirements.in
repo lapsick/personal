@@ -1,0 +1,6 @@
+# Top-level runtime dependencies (human-edited).
+# Compile with: pip-compile requirements.in -> requirements.txt
+Django>=5.2,<5.3
+wagtail>=7.4,<7.5
+psycopg[binary]>=3.2
+whitenoise>=6.7
