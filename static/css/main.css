@@ -1,238 +1,196 @@
 /*
- * main.css — mobile-first scaffold with AA-contrast design tokens.
- * All color pairings meet WCAG 2.1 AA (>= 4.5:1 body, >= 3:1 large/UI).
+ * main.css — thin project override layer on top of Pico CSS (vendored v2.0.6).
+ *
+ * Pico provides base typography, forms, buttons, cards (<article>), tables,
+ * code, blockquotes, nav lists, and automatic light/dark theming. This file
+ * keeps ONLY the project-specific pieces Pico does not cover, expressed with
+ * Pico's --pico-* custom properties so every override adapts to both themes
+ * and meets WCAG 2.1 AA in each.
+ *
+ * Loaded AFTER pico.min.css (see core/templates/core/base.html) so these rules
+ * win where they intentionally override the framework.
  */
-
-:root {
-  /* Palette (AA-checked against #ffffff / #1a1a1a) */
-  --color-bg: #ffffff;
-  --color-surface: #f4f5f7;
-  --color-text: #1a1a1a; /* 16.1:1 on white */
-  --color-text-muted: #4a4f57; /* 8.3:1 on white */
-  --color-primary: #0b5fa5; /* 6.4:1 on white */
-  --color-primary-contrast: #ffffff;
-  --color-border: #d0d4da;
-  --color-error: #b00020; /* 6.6:1 on white */
-  --color-focus: #0b5fa5;
-
-  /* Spacing scale */
-  --space-1: 0.25rem;
-  --space-2: 0.5rem;
-  --space-3: 1rem;
-  --space-4: 1.5rem;
-  --space-5: 2.5rem;
-  --space-6: 4rem;
-
-  /* Typography */
-  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
-    sans-serif;
-  --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas,
-    monospace;
-  --line-height: 1.6;
-  --measure: 68ch;
-
-  --radius: 6px;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: var(--font-body);
-  line-height: var(--line-height);
-  color: var(--color-text);
-  background: var(--color-bg);
-}
 
 /* --- Skip link (visible on focus) --- */
 .skip-link {
   position: absolute;
-  left: var(--space-2);
+  left: 0.5rem;
   top: -3rem;
   z-index: 1000;
-  padding: var(--space-2) var(--space-3);
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
-  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  background: var(--pico-primary-background);
+  color: var(--pico-primary-inverse);
+  border-radius: var(--pico-border-radius);
   transition: top 0.15s ease-in-out;
 }
 .skip-link:focus {
-  top: var(--space-2);
+  top: 0.5rem;
 }
 
-/* --- Visible focus indicator everywhere --- */
+/* --- Strong, always-visible focus indicator (AA) --- */
 :focus-visible {
-  outline: 3px solid var(--color-focus);
+  outline: 3px solid var(--pico-primary);
   outline-offset: 2px;
 }
 
-a {
-  color: var(--color-primary);
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-.container {
-  width: 100%;
-  max-width: 72rem;
-  margin-inline: auto;
-  padding-inline: var(--space-3);
-}
-
-/* --- Header / nav --- */
+/* --- Header / nav (Pico styles the <ul>; we lay out brand vs nav) --- */
 .site-header {
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  margin-bottom: var(--pico-spacing);
 }
 .site-header__inner {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
-  padding-block: var(--space-3);
+  gap: var(--pico-spacing);
+  padding-block: var(--pico-spacing);
 }
 .site-header__brand {
   font-weight: 700;
   text-decoration: none;
-  color: var(--color-text);
+  color: var(--pico-color);
 }
 .site-nav__list {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  gap: 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 .site-nav__link {
   text-decoration: none;
-  padding-block: var(--space-1);
+  padding-block: 0.25rem;
   border-bottom: 2px solid transparent;
 }
 .site-nav__link.is-current {
-  border-bottom-color: var(--color-primary);
+  border-bottom-color: var(--pico-primary);
   font-weight: 600;
 }
 
-/* --- Main content rhythm --- */
-main {
-  padding-block: var(--space-5);
-}
-main :is(p, ul, ol) {
-  max-width: var(--measure);
-}
-
-/* --- Buttons / CTAs --- */
-.button {
+/* --- Buttons / CTAs: make .button anchors match Pico's <button> --- */
+.button,
+.button--secondary {
   display: inline-block;
-  padding: var(--space-2) var(--space-4);
-  background: var(--color-primary);
-  color: var(--color-primary-contrast);
-  border: 2px solid var(--color-primary);
-  border-radius: var(--radius);
-  text-decoration: none;
+  padding: var(--pico-form-element-spacing-vertical)
+    var(--pico-form-element-spacing-horizontal);
+  border: var(--pico-border-width) solid
+    var(--pico-primary-border, var(--pico-primary-background));
+  border-radius: var(--pico-border-radius);
+  background: var(--pico-primary-background);
+  color: var(--pico-primary-inverse);
   font-weight: 600;
+  line-height: var(--pico-line-height);
+  text-decoration: none;
   cursor: pointer;
+}
+.button:hover {
+  background: var(--pico-primary-hover-background);
+  border-color: var(--pico-primary-hover-border, var(--pico-primary-hover-background));
 }
 .button--secondary {
   background: transparent;
-  color: var(--color-primary);
+  color: var(--pico-primary);
+}
+.button--secondary:hover {
+  background: transparent;
+  color: var(--pico-primary-hover, var(--pico-primary));
 }
 
-/* --- Cards / listings --- */
+/* --- Hero --- */
+.hero {
+  padding-block: calc(var(--pico-spacing) * 2);
+}
+.hero__heading {
+  margin-bottom: 0.5rem;
+}
+.hero__subheading {
+  color: var(--pico-muted-color);
+  font-size: 1.15rem;
+  max-width: 60ch;
+}
+
+/* --- Card grid / listings (Pico styles <article> as a card) --- */
 .card-grid {
   display: grid;
-  gap: var(--space-4);
+  gap: var(--pico-spacing);
   grid-template-columns: 1fr;
 }
 .card {
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-4);
-  background: var(--color-bg);
+  margin: 0;
+  height: 100%;
+}
+.card__meta {
+  color: var(--pico-muted-color);
+  font-size: 0.95rem;
 }
 .empty-state {
-  padding: var(--space-5);
-  background: var(--color-surface);
-  border-radius: var(--radius);
+  padding: calc(var(--pico-spacing) * 1.5);
+  background: var(--pico-card-background-color);
+  border: 1px solid var(--pico-card-border-color);
+  border-radius: var(--pico-border-radius);
   text-align: center;
-  color: var(--color-text-muted);
+  color: var(--pico-muted-color);
 }
 
 /* --- Tag lists --- */
 .tag-list {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-2);
+  gap: 0.5rem;
   padding: 0;
   list-style: none;
 }
 .tag {
-  padding: var(--space-1) var(--space-2);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  padding: 0.25rem 0.6rem;
+  background: var(
+    --pico-card-sectioning-background-color,
+    var(--pico-card-background-color)
+  );
+  border: 1px solid var(--pico-muted-border-color);
+  border-radius: var(--pico-border-radius);
   font-size: 0.9rem;
 }
 
-/* --- Article list --- */
+/* --- Article list (blog index) --- */
 .article-list {
   list-style: none;
   padding: 0;
 }
 .article-list__item {
-  padding-block: var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  padding-block: var(--pico-spacing);
+  border-bottom: 1px solid var(--pico-muted-border-color);
 }
 .article-list__meta,
 .article__meta {
-  color: var(--color-text-muted);
+  color: var(--pico-muted-color);
   font-size: 0.95rem;
 }
 
-/* --- Forms --- */
+/* --- Forms: Pico styles controls; we keep wrapper + error states --- */
 .form-field {
-  margin-bottom: var(--space-4);
-}
-.form-field label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: var(--space-1);
-}
-.form-field input,
-.form-field textarea {
-  width: 100%;
-  padding: var(--space-2);
-  font: inherit;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  margin-bottom: var(--pico-spacing);
 }
 .form-field--error input,
 .form-field--error textarea {
-  border-color: var(--color-error);
+  border-color: var(--pico-form-element-invalid-border-color);
 }
 .field-error,
 .error-summary {
-  color: var(--color-error);
+  color: var(--pico-del-color);
   font-weight: 600;
 }
 .error-summary {
-  border: 1px solid var(--color-error);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  margin-bottom: var(--space-4);
+  border: 1px solid var(--pico-del-color);
+  border-radius: var(--pico-border-radius);
+  padding: var(--pico-spacing);
+  margin-bottom: var(--pico-spacing);
 }
+.req {
+  color: var(--pico-del-color);
+}
+
 /* Visually hidden but available to assistive tech. */
 .visually-hidden {
   position: absolute;
@@ -246,7 +204,7 @@ main :is(p, ul, ol) {
   white-space: nowrap;
 }
 
-/* Honeypot: hidden from everyone including AT, but present in the DOM. */
+/* Honeypot: hidden from everyone incl. assistive tech, present in the DOM. */
 .hp-field {
   position: absolute;
   left: -9999px;
@@ -255,26 +213,41 @@ main :is(p, ul, ol) {
   overflow: hidden;
 }
 .privacy-notice {
-  color: var(--color-text-muted);
+  color: var(--pico-muted-color);
   font-size: 0.9rem;
-  max-width: var(--measure);
+  max-width: 60ch;
+}
+
+/* --- Contact fallback --- */
+.contact__fallback {
+  margin-top: calc(var(--pico-spacing) * 2);
+}
+.contact__fallback-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 /* --- Footer --- */
 .site-footer {
-  margin-top: var(--space-6);
-  border-top: 1px solid var(--color-border);
-  background: var(--color-surface);
+  margin-top: calc(var(--pico-spacing) * 3);
+  border-top: 1px solid var(--pico-muted-border-color);
+  background: var(--pico-card-background-color);
 }
 .site-footer__inner {
-  padding-block: var(--space-5);
+  padding-block: calc(var(--pico-spacing) * 1.5);
 }
 .site-footer__links {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-3);
+  gap: 1rem;
   padding: 0;
   list-style: none;
+}
+.site-footer__title {
+  color: var(--pico-muted-color);
 }
 
 /* --- Error pages --- */
@@ -283,22 +256,33 @@ main :is(p, ul, ol) {
 }
 .error__code {
   font-size: clamp(3rem, 10vw, 6rem);
-  margin-bottom: var(--space-2);
+  margin-bottom: 0.5rem;
 }
 
 /* --- Body content blocks --- */
+.body-code__lang {
+  font-family: var(--pico-font-family-monospace);
+  font-size: 0.85rem;
+  color: var(--pico-muted-color);
+  margin-bottom: 0.25rem;
+}
 .body-code pre {
   overflow-x: auto;
-  padding: var(--space-3);
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  font-family: var(--font-mono);
 }
 .body-quote blockquote {
-  margin: 0;
-  padding-left: var(--space-3);
-  border-left: 4px solid var(--color-primary);
-  font-style: italic;
+  margin-inline: 0;
+}
+.body-quote figcaption,
+.body-image figcaption {
+  margin-top: 0.5rem;
+  color: var(--pico-muted-color);
+  font-size: 0.95rem;
+}
+
+/* --- Ensure media scales within its container (no horizontal overflow) --- */
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 /* --- Larger viewports --- */

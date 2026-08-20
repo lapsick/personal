@@ -10,6 +10,9 @@ targeting WCAG 2.1 AA, good Core Web Vitals, and privacy-compliant contact handl
 
 - Python 3.12, Django 5.2 LTS, Wagtail 7.4 LTS
 - PostgreSQL in production (CodeRed Cloud), SQLite locally
+- [Pico CSS](https://picocss.com) (v2, vendored as a static asset) for styling —
+  classless/semantic-first with automatic light/dark theming via `prefers-color-scheme`;
+  `static/css/main.css` is a thin project override layer on top
 - WhiteNoise for static files; `pip-tools` for dependency locking
 - Tooling: `ruff` (format + lint), `mypy` + `django-stubs`, `pytest` (+ `pytest-django`, `pytest-cov`)
 
@@ -41,7 +44,7 @@ home/     # HomePage (site root) + AboutPage
 projects/ # ProjectIndexPage + ProjectPage
 blog/     # BlogIndexPage + ArticlePage (+ tags)
 contact/  # ContactPage (Wagtail form) with honeypot + time-trap spam protection
-static/   # source CSS
+static/   # source CSS (css/vendor/pico.min.css + css/main.css override layer)
 templates/# project-wide 404/500
 ```
 
