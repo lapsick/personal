@@ -4,7 +4,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     {% include "core/partials/seo_head.html" %}
+    {# Vendored Pico CSS (v2.0.6, MIT) — base framework, loaded before project overrides. #}
+    <link rel="stylesheet" href="{% static 'css/vendor/pico.min.css' %}" />
     <link rel="stylesheet" href="{% static 'css/main.css' %}" />
     {% block extra_head %}{% endblock %}
   </head>

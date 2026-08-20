@@ -26,6 +26,67 @@ def test_every_page_has_skip_link_and_landmarks(client, home_page):
     assert 'lang="en"' in html
 
 
+def test_base_loads_pico_before_main_css(client, home_page):
+    """Pico is linked before the project override layer (feature 002, contract C1).
+
+    The override layer must win where it intentionally overrides Pico, so the
+    vendored framework MUST appear earlier in the document than ``main.css``.
+    """
+    html = client.get("/").content.decode()
+    assert "css/vendor/pico.min.css" in html
+    assert "css/main.css" in html
+    assert html.index("css/vendor/pico.min.css") < html.index("css/main.css")
+    # Dual light/dark scheme is declared so native controls theme correctly.
+    assert 'name="color-scheme"' in html
+    assert "light dark" in html
+
+
+def test_all_body_blocks_render(client, blog_index):
+    """Every StreamField block type renders without error (feature 002, SC-002).
+
+    A single article carrying heading, paragraph, code, image, and quote blocks
+    must render 200 with each block's wrapper present — proof that no block falls
+    back to unstyled/broken output under the Pico restyle.
+    """
+    import datetime
+    import json
+
+    from blog.models import ArticlePage
+    from core.tests.factories import ImageFactory
+
+    image = ImageFactory()
+    body = json.dumps(
+        [
+            {"type": "heading", "value": {"text": "A section heading", "level": "h2"}},
+            {"type": "paragraph", "value": "<p>Body <strong>text</strong> here.</p>"},
+            {"type": "code", "value": {"language": "python", "code": "x = 1"}},
+            {
+                "type": "image",
+                "value": {"image": image.pk, "alt_text": "Alt text", "caption": "A caption"},
+            },
+            {"type": "quote", "value": {"quote": "A memorable quote.", "attribution": "Someone"}},
+        ]
+    )
+    article = ArticlePage(
+        title="All Blocks",
+        slug="all-blocks",
+        date=datetime.date(2025, 1, 1),
+        summary="Exercises every body block.",
+        body=body,
+    )
+    blog_index.add_child(instance=article)
+    article = ArticlePage.objects.get(pk=article.pk)
+
+    response = client.get(article.url)
+    assert response.status_code == 200
+    html = response.content.decode()
+    assert "body-heading" in html and "A section heading" in html
+    assert "body-richtext" in html
+    assert "body-code" in html and "python" in html
+    assert "body-image" in html and "A caption" in html
+    assert "body-quote" in html and "A memorable quote." in html
+
+
 def test_nav_marks_current_page(client, home_page, contact_page):
     """The navigation flags the current section via ``aria-current`` (FR-003)."""
     home_html = client.get("/").content.decode()
